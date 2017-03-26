@@ -46,6 +46,11 @@ class RegionGetter:
             for candidate in subregion['votes']:
                 self.context['votes'][candidate] += subregion['votes'][candidate]
 
+        self.context['percentage_votes'] = {}
+        for candidate in self.context['votes']:
+            self.context['percentage_votes'][candidate] = \
+                self.context['votes'][candidate] / self.context['ballots_valid']
+
 class CountryGetter(RegionGetter):
     def __init__(self):
         super().__init__()
