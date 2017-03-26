@@ -75,10 +75,7 @@ def generate_region(region, jinja_env):
             is to be generated.
         jinja_env: the Jinja environment providing templates for generation.
     """
-    if region['with_map']:
-        template = jinja_env.get_template('with_map.html')
-    else:
-        template = jinja_env.get_template('without_map.html')
+    template = jinja_env.get_template(region['template'])
 
     helpers = {
         'generate_path': generate_path,

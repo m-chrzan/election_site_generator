@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block google_includes %} {{ super() }}, 'geochart' {% endblock %}
+{% block google_charts %}
+{{ super() }}
+google.charts.setOnLoadCallback(drawRegionsMap);
+function drawRegionsMap() {
+
+  var data = google.visualization.arrayToDataTable([
+    ['Województwo', 'Frekwencja', {role: 'tooltip', p:{html:true}}],
+    {% for voivodeship in region.subregions %}
+    ['{{voivodeship.name}}', {{voivodeship.turnout}},
+    {v: '{{helpers.generate_rel_url(region, voivodeship)}}', f: 'test'}],
+    {% endfor %}
+  ]);
+
+  var options = {
+    region: 'PL',
+    resolution: 'provinces',
+    height: 500,
+    width: 500,
+    colorAxis: { minValue: 0.25, maxValue: 0.75, colors: ['#F5F5F5', '#990000']}
+  };
+
+  var chart = new google.visualization.GeoChart(document.getElementById('map'));
+
+  google.visualization.events.addListener(chart, 'select', function () {
+    var selection = chart.getSelection();
+    var row = selection[0].row;
+    var url = data.getValue(row, 2);
+    location.href = url;
+  });
+
+  chart.draw(data, options);
+}
+{% endblock %}
+{% block turnout %}
+<div id=map></div>
+{{ super() }}
+{% endblock %}

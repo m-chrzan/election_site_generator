@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block turnout %}
+<table>
+  <tr>
+    <th>obwód</th>
+    <th>Frekwencja</th>
+  </tr>
+  {% for circuit in region.circuits %}
+  <tr>
+    <td>{{circuit.name}}</td>
+    <td>{{"%.2f%%" | format(100 * circuit.turnout)}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

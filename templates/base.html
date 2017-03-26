@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      {{region.name.capitalize()}} | Wybory Prezydenta Rzeczypospolitej Polskiej 2000
+    </title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current',
+        {'packages':[{% block google_includes %}'corechart', 'table'{% endblock %}]}
+      );
+
+      {% block google_charts %}
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var candidates = [
+          {% for candidate, votes in region.percentage_votes.items() %}
+            ['{{candidate}}', {{votes}}],
+          {% endfor %}
+        ];
+
+        // Sort candidates by vote percentage
+        candidates.sort((a,b) => {
+          return a[1] - b[1];
+        })
+
+        var data = google.visualization.arrayToDataTable([
+          ['Kandydat', 'Procent głosów'], ...candidates
+        ]);
+
+        var options = {
+          sliceVisibilityThreshold: 0.03,
+          tooltip: {text: 'percentage', trigger: 'selection'},
+          height: 400,
+          width: 1000
+        };
+
+        var piechart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        piechart.draw(data, options);
+      }
+      {% endblock %}
+    </script>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        {% for reg in helpers.generate_path(region) %}
+        <li>
+          <a href='{{helpers.generate_rel_url(region, reg)}}'>{{reg.name}}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <section>
+      <h2>Procentowa liczba głosów w {{ region.locative }}</h2>
+        <div id='piechart'></div>
+    </section>
+
+    <section>
+      <h2> Wyniki poszczegółnych kandydatów w {{ region.locative }}</h2>
+        <table>
+          <tr>
+            <th>Kandydat</th>
+            <th>Liczba głosów oddanych na kandydata</th>
+            <th>Procentowa liczba głosów oddanych na kandydata</th>
+          </tr>
+          {% for candidate, votes in region.votes.items() %}
+          <tr>
+            <td>{{candidate}}</td>
+            <td>{{votes}}</td>
+            <td>{{"%.2f%%" | format(100 * votes / region.ballots_valid)}}</td>
+          {% endfor %}
+        </table>
+    </section>
+
+    <section>
+      <h2>Frekwencja</h2>
+        {% block turnout %}
+        <table>
+          <tr>
+            <th>{{region.subregions[0].nominative}}</th>
+            <th>Frekwencja</th>
+          </tr>
+          {% for subregion in region.subregions %}
+          <tr>
+            <td>
+              <a href='{{helpers.generate_rel_url(region, subregion)}}'>
+              {{subregion.name}}
+              </a>
+            </td>
+            <td>{{"%.2f%%" | format(100 * subregion.turnout)}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% endblock %}
+    </section>
+  </body>
+</html>

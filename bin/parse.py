@@ -18,7 +18,7 @@ class RegionGetter:
     def __init__(self):
         self.context = {
             'subregions': [],
-            'with_map': False,
+            'template': 'base.html',
             'superregion': None
         }
 
@@ -54,7 +54,7 @@ class RegionGetter:
 class CountryGetter(RegionGetter):
     def __init__(self):
         super().__init__()
-        self.context['with_map'] = True
+        self.context['template'] = 'with_map.html'
         self.context['locative'] = 'kraju'
         self.context['name'] = 'Polska'
         self.context['subregions'] = self.get_voivodeships()
@@ -100,6 +100,7 @@ class VoivodeshipGetter(RegionGetter):
     def __init__(self, superregion, name, district_numbers):
         super().__init__()
         self.context['locative'] = 'województwie'
+        self.context['nominative'] = 'województwo'
         self.context['superregion'] = superregion
         self.context['name'] = name
         self.context['level'] = 1
@@ -114,6 +115,7 @@ class DistrictGetter(RegionGetter):
     def __init__(self, superregion, number):
         super().__init__()
         self.context['locative'] = 'okręgu'
+        self.context['nominative'] = 'okręg'
         self.context['superregion'] = superregion
         self.context['name'] = "Okręg nr. " + number
         self.context['number'] = number
@@ -132,7 +134,9 @@ class DistrictGetter(RegionGetter):
 class GminaGetter(RegionGetter):
     def __init__(self, superregion, name):
         super().__init__()
+        self.context['template'] = 'with_circuits.html'
         self.context['locative'] = 'gminie'
+        self.context['nominative'] = 'gmina'
         self.context['superregion'] = superregion
         self.context['name'] = name
         self.context['level'] = 3
@@ -215,6 +219,7 @@ class XlsParser:
             self.BALLOTS_VALID))
 
         circuit['votes'] = self.get_votes(sheet, row)
+        circuit['turnout'] = circuit['ballots_valid'] / circuit['eligible']
 
         return circuit
 
