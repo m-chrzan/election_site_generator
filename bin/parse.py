@@ -58,7 +58,7 @@ class CountryGetter(RegionGetter):
         self.context['locative'] = 'kraju'
         self.context['name'] = 'Polska'
         self.context['subregions'] = self.get_voivodeships()
-        self.context['level'] = 0
+        self.context['level'] = 1
 
         self.set_voting_data()
         self.set_votes()
@@ -103,7 +103,7 @@ class VoivodeshipGetter(RegionGetter):
         self.context['nominative'] = 'województwo'
         self.context['superregion'] = superregion
         self.context['name'] = name
-        self.context['level'] = 1
+        self.context['level'] = 2
         for district_number in district_numbers:
             district = DistrictGetter(self.context, district_number).context
             self.context['subregions'].append(district)
@@ -119,7 +119,7 @@ class DistrictGetter(RegionGetter):
         self.context['superregion'] = superregion
         self.context['name'] = "Okręg nr. " + number
         self.context['number'] = number
-        self.context['level'] = 2
+        self.context['level'] = 3
         gmina_names = self.get_gmina_names()
         for gmina_name in gmina_names:
             gmina = GminaGetter(self.context, gmina_name).context
@@ -139,7 +139,7 @@ class GminaGetter(RegionGetter):
         self.context['nominative'] = 'gmina'
         self.context['superregion'] = superregion
         self.context['name'] = name
-        self.context['level'] = 3
+        self.context['level'] = 4
         self.context['circuits'] = data[superregion['number']][name]
         self.set_voting_data('circuits')
         self.set_votes('circuits')
