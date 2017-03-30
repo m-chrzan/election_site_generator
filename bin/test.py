@@ -1,5 +1,6 @@
 from selenium import webdriver
 from os import getcwd
+from random import shuffle
 from collections import defaultdict
 
 def check_page(level = 0):
@@ -11,10 +12,17 @@ def check_page(level = 0):
         browser.get(current_url)
 
     urls = get_subpage_urls()
-    for url in get_subpage_urls():
+    for url in select_up_to_3_random(urls):
         browser.get(url)
         check_page(level + 1)
         browser.get(current_url)
+
+def select_up_to_3_random(urls):
+    if len(urls) <= 3:
+        return urls
+    else:
+        shuffle(urls)
+        return urls[:3]
 
 def check_links_ok():
     """Checks that each link on the page leads to an existing site, and that
