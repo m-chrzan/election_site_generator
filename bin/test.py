@@ -3,16 +3,19 @@ import os
 import time
 from collections import defaultdict
 
-def do_and_wait(action):
-    action()
-    time.sleep(0.1)
-
-def check_page(name):
-    assert (name + " | Wybory Prezydenta Rzeczypospolitej Polskiej 2000" ==
-        browser.title)
-
+def check_page(level = 0):
+    current_url = browser.current_url
     check_links_ok()
-    check_votes_sum()
+    browser.get(current_url)
+    if level < 3:
+        check_votes_sum()
+        browser.get(current_url)
+
+    urls = get_subpage_urls()
+    for url in get_subpage_urls():
+        browser.get(url)
+        check_page(level + 1)
+        browser.get(current_url)
 
 def check_links_ok():
     """Checks that each link on the page leads to an existing site, and that
@@ -28,12 +31,12 @@ def check_links_ok():
         check_subpage_has_correct_title(url, name)
 
 def check_subpage_has_correct_title(url, name):
-    do_and_wait(lambda: browser.get(url))
+    browser.get(url)
 
     assert (name + " | Wybory Prezydenta Rzeczypospolitej Polskiej 2000" ==
         browser.title)
 
-    do_and_wait(lambda: browser.back())
+    browser.back()
 
 def get_subpage_urls():
     """Returns a list of urls to each subpage of the current page"""
@@ -67,14 +70,18 @@ def get_votes():
 def sum_subpage_votes():
     votes = defaultdict(lambda: 0)
     urls = get_subpage_urls()
+
     for url in urls:
-        do_and_wait(lambda: browser.get(url))
+        browser.get(url)
+
         sub_votes = get_votes()
         for candidate in sub_votes:
             votes[candidate] += sub_votes[candidate]
+
+        browser.back()
 
     return votes
 
 browser = webdriver.Firefox()
 browser.get('file://' + os.getcwd() + '/html/Polska.html')
-check_page("Polska")
+check_page()
