@@ -9,7 +9,7 @@
       rel="stylesheet">
     <meta charset="utf-8" />
     <title>
-      {{region.name.capitalize()}} | Wybory Prezydenta Rzeczypospolitej Polskiej 2000
+      {{region.name}} | Wybory Prezydenta Rzeczypospolitej Polskiej 2000
     </title>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -68,7 +68,7 @@
         <div id='piechart'></div>
     </section>
 
-    <section>
+    <section id='results'>
       <h2> Wyniki poszczegółnych kandydatów w {{ region.locative }}</h2>
         <table>
           <tr>
@@ -89,7 +89,7 @@
         </table>
     </section>
 
-    <section>
+    <section id='turnout'>
       <h2>Frekwencja</h2>
         {% block turnout %}
         <table>

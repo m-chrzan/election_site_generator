@@ -72,7 +72,7 @@ class CountryGetter(RegionGetter):
             indicator = sheet.cell_value(row, self.INDICATOR_COLUMN)
             if indicator == 'województwo':
                 voivodeship_name = sheet.cell_value(row,
-                        self.VOIVODESHIP_NAME_COLUMN)
+                        self.VOIVODESHIP_NAME_COLUMN).title()
                 disctrict_numbers = self.get_district_numbers(sheet, row + 1)
                 voivodeship = VoivodeshipGetter(self.context,
                         voivodeship_name, disctrict_numbers).context
