@@ -22,6 +22,6 @@ and [geckodriver](https://github.com/mozilla/geckodriver).
 
 ## Dependencies
 
-* Python 3.5
-* Jinja 2.9.5
-* xlrd 1.0.0
+* [Python](https://www.python.org/) 3.5
+* [Jinja](http://jinja.pocoo.org/) 2.9.5
+* [xlrd](http://xlrd.readthedocs.io/en/latest/) 1.0.0
