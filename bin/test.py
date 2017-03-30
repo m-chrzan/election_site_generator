@@ -1,6 +1,5 @@
 from selenium import webdriver
-import os
-import time
+from os import getcwd
 from collections import defaultdict
 
 def check_page(level = 0):
@@ -83,5 +82,5 @@ def sum_subpage_votes():
     return votes
 
 browser = webdriver.Firefox()
-browser.get('file://' + os.getcwd() + '/html/Polska.html')
+browser.get('file://' + getcwd() + '/html/Polska.html')
 check_page()
