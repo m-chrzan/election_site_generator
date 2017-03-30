@@ -13,6 +13,13 @@ subpages for each voivodeship, electoral disctrict, and gmina.
 The resulting HTML will be placed in an `html/` directory, and the downloaded
 data will be in `data/`.
 
+## Testing
+
+    python bin/test.py
+
+The testing script requires [Selenium bindings for Python](https://pypi.python.org/pypi/selenium)
+and [geckodriver](https://github.com/mozilla/geckodriver).
+
 ## Dependencies
 
 * Python 3.5
