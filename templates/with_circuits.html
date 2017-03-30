@@ -6,7 +6,11 @@
     <th>Frekwencja</th>
   </tr>
   {% for circuit in region.circuits %}
-  <tr>
+  {% if loop.index % 2 == 0 %}
+  <tr class='even-row'>
+  {% else %}
+  <tr class='odd-row'>
+  {% endif %}
     <td>{{circuit.name}}</td>
     <td>{{"%.2f%%" | format(100 * circuit.turnout)}}</td>
   </tr>
