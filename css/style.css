@@ -62,6 +62,7 @@ table {
   overflow-x: auto;
   width: auto;
   margin: auto;
+  border-bottom: solid 1px black
 }
 
 th {
