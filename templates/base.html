@@ -25,7 +25,7 @@
 
         var candidates = [
           {% for candidate, votes in region.percentage_votes.items() %}
-            ['{{candidate}}', {{votes}}],
+            ['{{candidate | title}}', {{votes}}],
           {% endfor %}
         ];
 
@@ -83,7 +83,7 @@
           {% else %}
           <tr class='odd-row'>
           {% endif %}
-            <td>{{candidate}}</td>
+            <td>{{candidate | title}}</td>
             <td>{{votes}}</td>
             <td>{{"%.2f%%" | format(100 * votes / region.ballots_valid)}}</td>
           {% endfor %}
