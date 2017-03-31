@@ -103,10 +103,6 @@ tr.even-row:hover {
 
 td {
   padding: 10px 10px;
-  /*
-  border-style: none solid;
-  border-width: 1px;
-  */
   text-align: right;
   font-family: 'Droid Sans Mono', sans-serif;
 }
